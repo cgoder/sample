@@ -8,7 +8,8 @@ from flask import Flask, request, Response,render_template
 
 # Create Flask application object
 # app = Flask(__name__)
-app = Flask(__name__, template_folder='./')
+# app = Flask(__name__, template_folder='./')
+app = Flask(__name__, static_url_path='', static_folder='static')
 
 # Load Movenet model
 interpreter = tf.lite.Interpreter(model_path='movenet_thunder.tflite')
@@ -20,7 +21,7 @@ interpreter.allocate_tensors()
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return app.send_static_file('index.html')
 
 @app.route('/generate', methods=['POST'])
 def generate():

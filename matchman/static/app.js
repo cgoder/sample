@@ -3,14 +3,14 @@ async function generateVideo() {
     const videoUrl = document.getElementById('video-url').value;
   
     // Send POST request to Flask server
-    // const response = await fetch('/generate', {
-    //   method: 'POST',
-    //   body: new FormData(document.getElementById('form')),
-    // });
-    const response = await fetch('/pose', {
-        method: 'POST',
-        body: new FormData(document.getElementById('form')),
-      });
+    const response = await fetch('/generate', {
+      method: 'POST',
+      body: new FormData(document.getElementById('form')),
+    });
+    // const response = await fetch('/pose', {
+    //     method: 'POST',
+    //     body: new FormData(document.getElementById('form')),
+    //   });
     // Read response data as a blob
     const videoData = await response.blob();
   

@@ -5,14 +5,13 @@
   </head>
   <body>
     <h1>Video Generator</h1>
-    <form action="/pose" method="POST">
+    <form action="/generate" method="POST">
       <label for="video_url">Video URL:</label>
       <input type="text" name="video_url" id="video_url" />
       <button type="submit">Generate</button>
     </form>
     <br />
     <video id="preview" width="640" height="480" controls></video>
-    <br />
     <video id="result" width="640" height="480" controls></video>
     <script src="app.js"></script>
   </body>
