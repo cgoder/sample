@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>视频帧获取</title>
+    <style>
+      #video-container {
+        margin: 20px;
+      }
+
+      video {
+        width: 640px;
+        height: 360px;
+        background-color: black;
+      }
+
+      canvas {
+        border: 1px solid black;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="video-container">
+      <form>
+        <label for="video-url">视频URL地址：</label>
+        <input type="text" id="video-url" name="video-url" />
+        <button type="submit">获取图像帧</button>
+      </form>
+      <video id="video" controls></video>
+      <canvas id="canvas"></canvas>
+    </div>
+    <script src="video.js"></script>
+  </body>
+</html>
