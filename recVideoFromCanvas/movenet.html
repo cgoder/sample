@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>视频预览和骨骼点绘制</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.2.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@4.2.0/dist/tf-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@2.1.0/dist/pose-detection.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <label for="url-input">输入视频URL：</label>
+      <input type="text" id="url-input" />
+      <button id="generate-btn">生成</button>
+    </div>
+    <div>
+      <video id="video-preview" width="320" height="240" controls></video>
+      <canvas id="canvas-preview" width="320" height="240"></canvas>
+      <a id="download-btn">下载视频</a>
+    </div>
+    <script src="./movenet.js"></script>
+  </body>
+</html>

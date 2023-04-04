@@ -23,22 +23,67 @@ async function loadModel() {
 }
 
 // 绘制骨架
+// function drawSkeleton(keypoints) {
+//   const numKeypoints = keypoints.length;
+//   ctx.clearRect(0, 0, canvasPreview.width, canvasPreview.height);
+//   ctx.fillStyle = "#FF0000";
+//   ctx.strokeStyle = "#FF0000";
+//   for (let i = 0; i < numKeypoints; i++) {
+//     const keypoint = keypoints[i];
+//     if (keypoint.score < 0.3) {
+//       continue;
+//     }
+//     ctx.beginPath();
+//     ctx.arc(keypoint.position.x, keypoint.position.y, 3, 0, 2 * Math.PI);
+//     ctx.fill();
+//   }
+// }
 function drawSkeleton(keypoints) {
   const numKeypoints = keypoints.length;
+  const colors = [
+    "#FF0000", // 鼻子
+    "#FF7F00", // 左眼
+    "#FFFF00", // 右眼
+    "#00FF00", // 左耳
+    "#00FFFF", // 右耳
+    "#0000FF", // 左肩
+    "#8B00FF", // 右肩
+    "#FF00FF", // 左肘
+    "#FF1493", // 右肘
+    "#FFA500", // 左手腕
+    "#FFD700", // 右手腕
+    "#008000", // 左臀
+    "#808000", // 右臀
+    "#000080", // 左膝
+    "#4B0082", // 右膝
+    "#800080", // 左脚踝
+    "#8B4513", // 右脚踝
+  ];
+  const minDistance = Math.min(canvasPreview.width, canvasPreview.height) / 30;
+
   ctx.clearRect(0, 0, canvasPreview.width, canvasPreview.height);
-  ctx.fillStyle = "#FF0000";
-  ctx.strokeStyle = "#FF0000";
+
   for (let i = 0; i < numKeypoints; i++) {
     const keypoint = keypoints[i];
     if (keypoint.score < 0.3) {
       continue;
     }
+    const color = colors[i];
+    // const radius = Math.max(
+    //   minDistance * (1 - keypoint.y / canvasPreview.height),
+    //   2
+    // );
+    const radius = 3;
+
     ctx.beginPath();
-    ctx.arc(keypoint.position.x, keypoint.position.y, 3, 0, 2 * Math.PI);
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+    ctx.arc(keypoint.position.x, keypoint.position.y, radius, 0, 2 * Math.PI);
     ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
   }
 }
-
 // 初始化录制器
 function initRecorder() {
   downloadBtn = document.getElementById("download-btn");
@@ -108,5 +153,5 @@ async function main() {
 }
 
 // 在DOM加载完成后调用主函数
-// document.addEventListener("DOMContentLoaded", main);
-main()
+document.addEventListener("DOMContentLoaded", main);
+// main()

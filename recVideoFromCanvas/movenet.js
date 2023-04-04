@@ -27,17 +27,48 @@ async function loadModel() {
 // 绘制骨架
 function drawSkeleton(keypoints) {
   const numKeypoints = keypoints.length;
+  const colors = [
+    "#FF0000", // 鼻子
+    "#FF7F00", // 左眼
+    "#FFFF00", // 右眼
+    "#00FF00", // 左耳
+    "#00FFFF", // 右耳
+    "#0000FF", // 左肩
+    "#8B00FF", // 右肩
+    "#FF00FF", // 左肘
+    "#FF1493", // 右肘
+    "#FFA500", // 左手腕
+    "#FFD700", // 右手腕
+    "#008000", // 左臀
+    "#808000", // 右臀
+    "#000080", // 左膝
+    "#4B0082", // 右膝
+    "#800080", // 左脚踝
+    "#8B4513", // 右脚踝
+  ];
+  const minDistance = Math.min(canvasPreview.width, canvasPreview.height) / 30;
+
   ctx.clearRect(0, 0, canvasPreview.width, canvasPreview.height);
-  ctx.fillStyle = "#FF0000";
-  ctx.strokeStyle = "#FF0000";
+
   for (let i = 0; i < numKeypoints; i++) {
     const keypoint = keypoints[i];
     if (keypoint.score < 0.3) {
       continue;
     }
+    const color = colors[i];
+    // const radius = Math.max(
+    //   minDistance * (1 - keypoint.y / canvasPreview.height),
+    //   2
+    // );
+    const radius = 3;
+
     ctx.beginPath();
-    ctx.arc(keypoint.x, keypoint.y, 3, 0, 2 * Math.PI);
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+    ctx.arc(keypoint.x, keypoint.y, radius, 0, 2 * Math.PI);
     ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
   }
 }
 
@@ -70,8 +101,7 @@ function stopRecording() {
 // 估计姿势并绘制骨架
 async function estimatePose() {
   try {
-    const poses = await net.estimatePoses(video);
-    console.log("Got pose:", poses);
+    const poses = await net.estimatePoses(video,{ flipHorizontal: false });
     if (poses.length > 0) {
       drawSkeleton(poses[0].keypoints);
     }
@@ -84,10 +114,6 @@ async function estimatePose() {
 async function main() {
   video = videoPreview;
   ctx = canvasPreview.getContext("2d");
-  // const willReadFromCanvas2d = tf
-  //   .env()
-  //   .getBool("CANVAS2D_WILL_READ_FREQUENTLY_FOR_GPU");
-  // console.log("will", willReadFromCanvas2d);
 
   // 添加事件监听器
   generateBtn.addEventListener("click", async () => {
@@ -96,7 +122,10 @@ async function main() {
     videoPreview.src = videoUrl;
     await videoPreview.play();
   });
-
+  videoPreview.addEventListener("loadedmetadata", function() {
+    canvasPreview.width = videoPreview.videoWidth;
+    canvasPreview.height = videoPreview.videoHeight;
+  });
   videoPreview.addEventListener("play", async () => {
     await loadModel();
     intervalId = setInterval(() => {
