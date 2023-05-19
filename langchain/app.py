@@ -18,6 +18,7 @@ def load_azureLLM():
         deployment_name=DEPLOYMENT_NAME_CHAT,
         temperature=AI_TEMPERATURE,
         max_tokens=AI_MAX_TOKENS,
+        streaming=True,
         )
     # llm
     llm = AzureOpenAI(model_name="text-davinci-003")
