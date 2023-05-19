@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models import AzureChatOpenAI
 from langchain.llms import AzureOpenAI
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 AI_TEMPERATURE=0
 AI_MAX_TOKENS=2048
 def load_azureLLM():
@@ -19,6 +20,7 @@ def load_azureLLM():
         temperature=AI_TEMPERATURE,
         max_tokens=AI_MAX_TOKENS,
         streaming=True,
+        callbacks=[StreamingStdOutCallbackHandler()],
         )
     # llm
     llm = AzureOpenAI(model_name="text-davinci-003")
