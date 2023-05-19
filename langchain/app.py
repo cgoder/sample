@@ -65,6 +65,7 @@ def ChatMessage(chatLLM):
 from langchain.prompts.chat import (
     ChatPromptTemplate,
     SystemMessagePromptTemplate,
+    AIMessagePromptTemplate,
     HumanMessagePromptTemplate,
 )
 from langchain import LLMChain
@@ -116,6 +117,23 @@ def ChatAgent(llm):
     res = agent.run("刘强东的妻子是谁？他们是什么时候结婚的？")
     print("\nchatAgent result: ",res)
 
+### FewShot
+def FewShot(chat):
+    template="You are a helpful assistant that translates english to pirate."
+    system_message_prompt = SystemMessagePromptTemplate.from_template(template)
+    # example_human = HumanMessagePromptTemplate.from_template("Hi")
+    example_human = SystemMessagePromptTemplate.from_template("Hi", additional_kwargs={"name": "example_user"})
+    # example_ai = AIMessagePromptTemplate.from_template("Argh me mateys")
+    example_ai = SystemMessagePromptTemplate.from_template("Argh me mateys", additional_kwargs={"name": "example_assistant"})
+    human_template="{text}"
+    human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
+
+    chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, example_human, example_ai, human_message_prompt])
+    chain = LLMChain(llm=chat, prompt=chat_prompt)
+    # get a chat completion from the formatted messages
+    res = chain.run("I love programming.")
+    print("\nFewShot result: ",res)
+
 def main():
     load_dotenv()
     chat, llm = load_azureLLM()
@@ -123,7 +141,7 @@ def main():
     ChatMessage(chat)
     ChatPromptTempl(chat)
     ChatHistory(chat)
-    ChatAgent(chat,llm)
+    FewShot(chat)
 
 if __name__ == "__main__":
     main()
