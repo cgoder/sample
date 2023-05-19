@@ -147,6 +147,23 @@ def SaveProfile(chatLLM,llm):
     llm.save('llm.json')
     # chatLLM.save('chatLLM.json')
 
+### ChatCach
+import langchain
+from langchain.cache import InMemoryCache
+from langchain.cache import SQLiteCache
+from redis import Redis
+from langchain.cache import RedisCache
+def ChatCach(llm):
+    langchain.llm_cache = InMemoryCache()
+    langchain.llm_cache = RedisCache(redis_=Redis())
+    langchain.llm_cache = SQLiteCache(database_path=".langchain.db")
+    # %%time
+    llm("Tell me a joke")
+    # %%time
+    llm("Tell me a joke")
+    # %%time
+    llm("Tell me a joke")
+
 def main():
     load_dotenv()
     chat, llm = load_azureLLM()
@@ -155,7 +172,8 @@ def main():
     # ChatPromptTempl(chat)
     # ChatHistory(chat)
     # FewShot(chat)
-    SaveProfile(chat,llm)
+    # SaveProfile(chat,llm)
+    ChatCach(llm)
 
 if __name__ == "__main__":
     main()
