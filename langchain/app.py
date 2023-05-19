@@ -23,7 +23,11 @@ def load_azureLLM():
         callbacks=[StreamingStdOutCallbackHandler()],
         )
     # llm
-    llm = AzureOpenAI(model_name="text-davinci-003")
+    llm = AzureOpenAI(model_name="text-davinci-003",
+        temperature=AI_TEMPERATURE,
+        max_tokens=AI_MAX_TOKENS,
+        streaming=True,
+        callbacks=[StreamingStdOutCallbackHandler()],)
     
     return chat, llm
 
@@ -136,14 +140,22 @@ def FewShot(chat):
     res = chain.run("I love programming.")
     print("\nFewShot result: ",res)
 
+
+### SaveProfile
+from langchain.llms.loading import load_llm
+def SaveProfile(chatLLM,llm):
+    llm.save('llm.json')
+    # chatLLM.save('chatLLM.json')
+
 def main():
     load_dotenv()
     chat, llm = load_azureLLM()
-    Conversation(chat)
-    ChatMessage(chat)
-    ChatPromptTempl(chat)
-    ChatHistory(chat)
-    FewShot(chat)
+    # Conversation(chat)
+    # ChatMessage(chat)
+    # ChatPromptTempl(chat)
+    # ChatHistory(chat)
+    # FewShot(chat)
+    SaveProfile(chat,llm)
 
 if __name__ == "__main__":
     main()
