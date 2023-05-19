@@ -32,7 +32,7 @@ from langchain import ConversationChain
 def Conversation(chatLLM):
     conversation = ConversationChain(llm=chatLLM, verbose=True)
     res = conversation.predict(input="Hi there!")
-    print("Conversation: ", res)
+    print(f"Conversation: {res}")
 
 ### ChatMessage
 from langchain.schema import (
@@ -60,8 +60,8 @@ def ChatMessage(chatLLM):
         ],
     ]
     res = chatLLM.generate(batch_messages)
-    print("\nchatMsg result: ",res)
-    print("chatMsg useage: ",res.llm_output['token_usage'])
+    print(f"\nchatMsg result: {res}")
+    print(f"chatMsg useage: {res.llm_output['token_usage']}")
 
 ### ChatPromptTemplate & ChatChain
 from langchain.prompts.chat import (
