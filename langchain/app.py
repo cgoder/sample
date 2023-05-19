@@ -83,18 +83,6 @@ def ChatPromptTempl(chatLLM):
     res = chain.run(input_language="English", output_language="Chinese", text="I love programming.")
     print("\nchatChain result: ",res)
 
-### ChatAgent
-from langchain.agents import load_tools
-from langchain.agents import initialize_agent
-from langchain.agents import AgentType
-def ChatAgent(chatLLM,llm):
-    tools = load_tools(["serpapi", "llm-math"], llm=llm)
-    # Finally, let's initialize an agent with the tools, the language model, and the type of agent we want to use.
-    agent = initialize_agent(tools, chatLLM, agent=AgentType.CHAT_ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
-    # Now let's test it out!
-    res = agent.run("刘强东的妻子是谁？他们是什么时候结婚的？")
-    print("\nchatAgent result: ",res)
-
 
 ### ChatHistory
 from langchain.prompts import MessagesPlaceholder
@@ -114,6 +102,18 @@ def ChatHistory(chatLLM):
     res = conversation.predict(input="Tell me about yourself.")
     print("\nconversation result: ",res)
 
+
+### ChatAgent
+from langchain.agents import load_tools
+from langchain.agents import initialize_agent
+from langchain.agents import AgentType
+def ChatAgent(llm):
+    tools = load_tools(["serpapi", "llm-math"], llm=llm)
+    # Finally, let's initialize an agent with the tools, the language model, and the type of agent we want to use.
+    agent = initialize_agent(tools, llm, agent=AgentType.CHAT_ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
+    # Now let's test it out!
+    res = agent.run("刘强东的妻子是谁？他们是什么时候结婚的？")
+    print("\nchatAgent result: ",res)
 
 def main():
     load_dotenv()
